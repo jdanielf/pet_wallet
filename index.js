@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url'
 import routerPet from './src/routers/routerPet.js'
 import { sincronizarDB } from './src/config/orm.js'
 
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
