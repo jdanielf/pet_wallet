@@ -13,7 +13,7 @@ export const listarUsuarios = async (req, res) => {
     }
 }
 
-export const criarUsuario = async (req, res) => {
+export const salvarUsuario = async (req, res) => {
     const {nome, email, senha} = req.body
     if(!nome && !email && !senha) return res.status(400).json({mensagem: 'Preencha todos os campos!'})
     try{
@@ -31,5 +31,31 @@ export const criarUsuario = async (req, res) => {
 }
 
 export const cadastrarUsuario = (req, res) => {
-    res.sendFile(path.resolve('./src/public/html/cadastroUsuario.html'))
+    res.sendFile(path.resolve('./src/public/cadastroUsuario.html'))
+}
+
+
+export const atualizarUsuario = async (req, res) => {
+    const {nome, email, senha} = req.body
+    if(!nome && !email && !senha) return res.status(400).json({mensagem: 'Preencha todos os campos!'})
+    try{
+        const usuarioBD = await User.findOne({where: {email: email}})
+        await user.update(req.body, {where: {idUser: usuarioBD.idUser    }})
+      await user.update(req.BODY)
+      res.status(200).json({mensagem: 'Usuário atualizado com sucesso!'})
+    }catch(err){
+        res.status(500).json({mensagem: 'Erro no servidor!'})
+    }
+
+
+}
+export const removerUsuario =  (req, res) => {
+   
+
+
+}
+export const atualizarParcialUsuario =  (req, res) => {
+   
+
+
 }

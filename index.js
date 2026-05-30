@@ -5,6 +5,8 @@ import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 import routerPet from './src/routers/routerPet.js'
 import { sincronizarDB } from './src/config/orm.js'
+import routerUser from './src/routers/rotaUser.js'
+import routerLogin from './src/routers/routerLogin.js'
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -25,6 +27,9 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src/views'))
 
 app.use(routerPet)
+app.use(routerUser)
+app.use(routerLogin)
+
 
 app.get('/', (req, res) => {
   res.render('index', {
