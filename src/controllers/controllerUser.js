@@ -30,7 +30,7 @@ export const salvarUsuario = async (req, res) => {
     }
 }
 
-export const cadastrarUsuario = (req, res) => {
+export   const cadastrarUsuario = (req, res) => {
     res.sendFile(path.resolve('./src/public/cadastroUsuario.html'))
 }
 
@@ -40,8 +40,9 @@ export const atualizarUsuario = async (req, res) => {
     if(!nome && !email && !senha) return res.status(400).json({mensagem: 'Preencha todos os campos!'})
     try{
         const usuarioBD = await User.findOne({where: {email: email}})
-        await user.update(req.body, {where: {idUser: usuarioBD.idUser    }})
-      await user.update(req.BODY)
+        if(!usuarioBD) return res.status(400).json({mensagem: 'Usuário não encontrado!'})
+             const senhaCript = await bcrypt.hash(senha, 10)
+        await User.update({nome: nome, email: email, senha: senhaCript}, {where: {idUser: usuarioBD.idUser}})
       res.status(200).json({mensagem: 'Usuário atualizado com sucesso!'})
     }catch(err){
         res.status(500).json({mensagem: 'Erro no servidor!'})
@@ -49,13 +50,41 @@ export const atualizarUsuario = async (req, res) => {
 
 
 }
-export const removerUsuario =  (req, res) => {
-   
+export const removerUsuario = async (req, res) => {
+   const id =req.params.id
+   try{
+    const usuarioBD = await User.findByPk({where: {idUser: id}})
+    if(!usuarioBD) return res.status(400).json({mensagem: 'Usuário não encontrado!'})
+        await User.destroy({where: {idUser: id}})
+        res.status(200).json({mensagem: 'Usuário removido com sucesso!'})
+   }catch(err){
+    res.status(500).json({mensagem: 'Erro no servidor!'})
+   }
 
 
 }
-export const atualizarParcialUsuario =  (req, res) => {
-   
+export const atualizarParcialUsuario  = async (req, res) => {
+    const id =req.params.id
+    const {nome, email, senha} = req.body
+    
+    const usuarioNovo = {}
+    if(nome) usuarioNovo.nome = nome
+    if(email) usuarioNovo.email = email
+    if (senha){
+        const senhaCript = await bcrypt.hash(senha, 10)
+        usuarioNovo.senha = senhaCript
+    }
+
+
+
+    try{
+        const usuarioBD = await User.findOne({where: {email: id}})
+        if(!usuarioBD) return res.status(400).json({mensagem: 'Usuário não encontrado!'})
+        await User.update(usuarioNovo, {where: {idUser:id}})
+      res.status(200).json({mensagem: 'Usuário atualizado com sucesso!'})
+    }catch(err){
+        res.status(500).json({mensagem: 'Erro no servidor!'})
+    }
 
 
 }
