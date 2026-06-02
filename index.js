@@ -27,7 +27,7 @@ app.use(morgan('dev'))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src/views'))
 
-app.user(session({
+app.use(session({
   secret: 'sistema',
   resave: false,
   saveUninitialized: false,

@@ -21,6 +21,12 @@ export const validarLogin = async (req, res) => {
     const senhaDescript = await bcrypt.compare(senha, usuario.senha)
     // console.log(senhaDescript)
     if(!senhaDescript ) return res.status(400).json({mensagem: "Senha Inválida!"})
+
+        req.session.usuario = {
+  id: usuario.idUser,
+  nome: usuario.nome,
+  email: usuario.email
+}
         
      res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',
     subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
