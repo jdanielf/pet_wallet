@@ -8,6 +8,9 @@ import { sincronizarDB } from './src/config/orm.js'
 import routerUser from './src/routers/rotaUser.js'
 import routerLogin from './src/routers/routerLogin.js'
 import session from 'express-session'
+import connectSqlite from 'connect-sqlite3'
+
+const SQLiteStore = connectSqlite(session)
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -28,11 +31,27 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'src/views'))
 
 app.use(session({
-  secret: 'sistema',
+
+  store: new SQLiteStore({
+    db: 'sessoes.db',
+    dir: './src/database',
+    table: 'sessions',
+    ttl:60 *60 * 24
+  }),
+
+
+   
+  
+  secret: 'sistema_pet',
   resave: false,
   saveUninitialized: false,
-  cookie:{maxAge: 1000 * 60 * 60 }
-}))
+  rolling: true,
+  cookie:{maxAge: 1000 * 60 * 60,
+    // expires: new Date(Date.now() + 1000 * 60 * 60) tempo fixo,
+    httpOnly: true
+}
+})
+)
 
 app.use(routerPet)
 app.use(routerUser)
