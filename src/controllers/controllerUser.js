@@ -14,7 +14,7 @@ export const listarUsuarios = async (req, res) => {
 }
 
 export const salvarUsuario = async (req, res) => {
-    const {nome, email, senha} = req.body
+    const {nome, email, senha, perfil} = req.body
     if(!nome && !email && !senha) return res.status(400).json({mensagem: 'Preencha todos os campos!'})
     try{
         // exemplo com crypto
@@ -23,8 +23,13 @@ export const salvarUsuario = async (req, res) => {
         // const senhaOK = senhaCript.digest('hex')
         // console.log(senhaOK)
         const senhaCript = await bcrypt.hash(senha, 10)
-        await User.create({nome: nome, email: email, senha: senhaCript})
-        res.status(200).json({mensagem: 'Usuário criado com sucesso!'})
+        await User.create({nome: nome, email: email, senha: senhaCript, perfil: perfil})
+        res.send(`
+    <script>
+        alert('Usuário criado com sucesso!');
+        window.location.href = '/login.html';
+    </script>
+     `)
     }catch(err){
         res.status(500).json({mensagem: 'Erro no servidor!'})
     }
@@ -36,13 +41,13 @@ export   const cadastrarUsuario = (req, res) => {
 
 
 export const atualizarUsuario = async (req, res) => {
-    const {nome, email, senha} = req.body
+    const {nome, email, senha, perfil} = req.body
     if(!nome && !email && !senha) return res.status(400).json({mensagem: 'Preencha todos os campos!'})
     try{
         const usuarioBD = await User.findOne({where: {email: email}})
         if(!usuarioBD) return res.status(400).json({mensagem: 'Usuário não encontrado!'})
              const senhaCript = await bcrypt.hash(senha, 10)
-        await User.update({nome: nome, email: email, senha: senhaCript}, {where: {idUser: usuarioBD.idUser}})
+        await User.update({nome: nome, email: email, senha: senhaCript, perfil: perfil}, {where: {idUser: usuarioBD.idUser}})
       res.status(200).json({mensagem: 'Usuário atualizado com sucesso!'})
     }catch(err){
         res.status(500).json({mensagem: 'Erro no servidor!'})
@@ -65,7 +70,7 @@ export const removerUsuario = async (req, res) => {
 }
 export const atualizarParcialUsuario  = async (req, res) => {
     const id =req.params.id
-    const {nome, email, senha} = req.body
+    const {nome, email, senha, perfil} = req.body
     
     const usuarioNovo = {}
     if(nome) usuarioNovo.nome = nome
@@ -74,6 +79,7 @@ export const atualizarParcialUsuario  = async (req, res) => {
         const senhaCript = await bcrypt.hash(senha, 10)
         usuarioNovo.senha = senhaCript
     }
+    if(perfil) usuarioNovo.perfil = perfil
 
 
 

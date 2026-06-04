@@ -7,7 +7,7 @@ const sincronizarDB = async () => {
   try {
     await sequelize.authenticate()
     await Pet.sync()
-    await User.sync({alter:true})
+    await User.sync({force :false})
     console.log('Banco de dados sincronizado com sucesso')
   } catch (error) {
     console.error('Erro ao sincronizar o banco de dados:', error)

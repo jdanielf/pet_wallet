@@ -30,7 +30,8 @@
                     req.session.usuario = {
                         id: usuario.idUser,
                         nome: usuario.nome,
-                        email: usuario.email
+                        email: usuario.email,
+                        perfil: usuario.perfil
                     }
 
                     return res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',

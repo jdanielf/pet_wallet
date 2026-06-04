@@ -22,6 +22,11 @@ const User = sequelize.define('User', {
     senha: {
         type: DataTypes.STRING(100),
         allowNull: false,
+    }, 
+    perfil:{
+        type: DataTypes.STRING(100),
+        allowNull: false,
+        
     }
 
 },
@@ -30,7 +35,8 @@ const User = sequelize.define('User', {
 
     tableName: 'usuarios',
     charset: 'utf8',
-    timestamps: false
+    timestamps: false,
+    
 }
 )
 
