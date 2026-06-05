@@ -9,6 +9,8 @@ import routerUser from './src/routers/rotaUser.js'
 import routerLogin from './src/routers/routerLogin.js'
 import session from 'express-session'
 import connectSqlite from 'connect-sqlite3'
+import { apagarCache } from './src/middlewares/auth.js'
+
 
 const SQLiteStore = connectSqlite(session)
 
@@ -52,6 +54,8 @@ app.use(session({
 }
 })
 )
+
+app.use(apagarCache)
 
 app.use(routerPet)
 app.use(routerUser)

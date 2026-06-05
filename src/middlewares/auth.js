@@ -1,17 +1,24 @@
+import User from '../models/modelUser.js'
+
+
 const perfils = ['cliente', 'petshop', 'admin']
 
 
-export const autenticar = (req, res, next) => {
+export const autenticar = async (req, res, next) => {
 
     if(!req.session.usuario)return res.redirect('/login')
 
-    next()
+    const usuario = await User.findById(req.session.usuario.id)
+    if (!usuario){
+        req.session.destroy (() => {})
+        return res.status(401).json({msg: 'Usuário não encontrado'})
 
-
-
-
-
+    }
+    req.usuario = usuario
+      
+        next()
 }
+
 
 export function validarPerfil (perfils){
 
@@ -21,4 +28,11 @@ export function validarPerfil (perfils){
 
         next()
     }
+}
+
+export const apagarCache = (req,res,next) => {
+    res.set('Cache-Control', 'no-store,no-cache, must-revalidate, private')
+    res.set('Pragma', 'no-cache')
+    res.set('Expires', '0') 
+    next()
 }
