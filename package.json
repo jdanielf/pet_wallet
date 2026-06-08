@@ -4,9 +4,7 @@
   "description": "Aplicação CRUD para carteira de pets com controle de vacinas, banho, tosa e serviços.",
   "main": "index.js",
   "type": "module",
-  "engines": {
-    "node": "22.x"
-  },
+  
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
