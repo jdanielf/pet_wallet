@@ -21,8 +21,8 @@ const __dirname = path.dirname(__filename)
 dotenv.config()
 
 const app = express()
-const port = 10000 || 10000
-const host = '0.0.0.0' || 'localhost'
+const port = 3000 || 10000
+const host = 'localhost'|| '0.0.0.0' 
 
 
 // const port = process.env.PORT || 3000
