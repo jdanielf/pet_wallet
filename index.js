@@ -68,11 +68,14 @@ app.use(routerLogin)
 
 
 app.get('/', (req, res) => {
-  res.render('index', {
-    usuario: 'visitante',
-    title: 'Carteira de Pets',
-    subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'
-  })
+res.redirect('/cadastroUsuario')
+
+
+  // res.render('index', {
+  //   usuario: 'visitante',
+  //   title: 'Carteira de Pets',
+  //   subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'
+  // })
 })
 
 await sincronizarDB()

@@ -6,7 +6,9 @@ const routerUser = exprex.Router()
 
 routerUser.get('/usuarios', listarUsuarios)
 routerUser.post('/usuario', salvarUsuario)
-routerUser.get('/cadastroUsuario',validarPerfil(['admin']), cadastrarUsuario)
+
+routerUser.get('/cadastroUsuario', autenticar, validarPerfil(['admin']),cadastrarUsuario)
+// routerUser.get('/cadastroUsuario',validarPerfil(['admin']), cadastrarUsuario)
 routerUser.put('/usuario', atualizarUsuario)
 routerUser.delete('/usuario/:id', removerUsuario)
 routerUser.patch('/usuario/:id', atualizarParcialUsuario)
