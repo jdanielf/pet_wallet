@@ -21,12 +21,12 @@ const __dirname = path.dirname(__filename)
 dotenv.config()
 
 const app = express()
-const port = 3000 || 10000
-const host = 'localhost'|| '0.0.0.0' 
+// const port = 3000 || 10000
+// const host = 'localhost'|| '0.0.0.0' 
 
 
-// const port = process.env.PORT || 3000
-// const host = process.env.HOST || 'localhost'
+const port = process.env.PORT || 3000
+const host = process.env.HOST || 'localhost'
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
