@@ -14,24 +14,59 @@ const __dirname = path.dirname(__filename)
 //   logging: false
 // })
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL)
+// console.log('DATABASE_URL:', process.env.DATABASE_URL)
 
-const sequelize = new Sequelize(
-  process.env.DATABASE_URL,
-  {
-    dialect: 'postgres',
-  dialectOptions: {
-    ssl:{
-      require: true,
-      rejectUnauthorized: false
+// if (!process.env.DATABASE_URL) {
+//   throw new Error('DATABASE_URL está undefined')
+// }
+
+
+// console.log('DATABASE_URL:', process.env.DATABASE_URL)
+
+let sequelize
+
+if(process.env.MODE_NODE ==='dev'){
+  console.log('Modo:' ,process.env.MODE_NODE)
+    sequelize = new Sequelize({
+    dialect: 'sqlite',
+    storage : './sc/database/bd.squelite'
+    })
+  }else{
+      sequelize = new Sequelize(process.env.DATABASE_URL),
+      {
+        dialect: 'postgres',
+        dialectOptions:{
+          ssl: {require: true, rejectUnauthorized: false}
+
+        },
+        logging:false
+
+      }
 
     }
 
 
-  },
-  logging: false
-}
 
-)
+
+
+
+
+// const sequelize = new Sequelize(
+//   process.env.DATABASE_URL,
+//   {
+//     dialect: 'postgres',
+//   dialectOptions: {
+//     ssl:{
+//       require: true,
+//       rejectUnauthorized: false
+
+//     }
+
+
+//   },
+//   logging: false
+// }
+
+// )
 
 export default sequelize
