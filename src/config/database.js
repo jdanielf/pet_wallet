@@ -29,7 +29,7 @@ if(process.env.MODE_NODE ==='dev'){
   console.log('Modo:' ,process.env.MODE_NODE)
     sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage : './sc/database/bd.squelite'
+    storage : './src/database/pets.sqlite',
     })
   }else{
      console.log('Modo:' ,process.env.MODE_NODE)
