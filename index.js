@@ -21,12 +21,14 @@ const __dirname = path.dirname(__filename)
 dotenv.config()
 
 const app = express()
-// const port = 3000 || 10000
-// const host = 'localhost'|| '0.0.0.0' 
 
+let PORT = process.env.EXPRESS_PORT 
+let HOST = process.env.EXPRESS_HOST 
 
-const port = process.env.PORT || 3000
-const host = process.env.HOST || 'localhost'
+if(process.env.MODE_NODE === 'dev') {
+  PORT = 3000
+  HOST = 'localhost'
+}
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -80,6 +82,6 @@ res.redirect('/cadastroUsuario')
 
 await sincronizarDB()
 
-app.listen(port, host, () => {
-  console.log(`Servidor em execução em http://${host}:${port}`)
+app.listen(PORT, HOST, () => {
+  console.log(`Servidor em execução em http://${HOST}:${PORT}`)
 })

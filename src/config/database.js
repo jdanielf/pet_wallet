@@ -32,6 +32,7 @@ if(process.env.MODE_NODE ==='dev'){
     storage : './sc/database/bd.squelite'
     })
   }else{
+     console.log('Modo:' ,process.env.MODE_NODE)
       sequelize = new Sequelize(process.env.DATABASE_URL),
       {
         dialect: 'postgres',
