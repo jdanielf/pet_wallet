@@ -16,7 +16,12 @@ export const autenticar = async (req, res, next) => {
     // }
 
     if(!req.cookies.token)return res.redirect('/login')
-
+        try{
+            const usuario = jwt.verify(req.cookies.token, 'JWT_SECRET')
+            req.usuario = usuario
+        }catch(err){
+            return res.redirect('/login')
+        }
     
 
     req.usuario = usuario
