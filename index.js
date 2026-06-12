@@ -10,6 +10,7 @@ import routerLogin from './src/routers/routerLogin.js'
 import session from 'express-session'
 import connectSqlite from 'connect-sqlite3'
 import { apagarCache } from './src/middlewares/auth.js'
+import cookieParser from 'cookie-parser'
 
 
 const SQLiteStore = connectSqlite(session)
@@ -60,7 +61,7 @@ app.use(session({
 }
 })
 )
-
+app.use(cookieParser())
 app.use(apagarCache)
 
 app.use(routerPet)

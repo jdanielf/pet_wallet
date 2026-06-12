@@ -1,6 +1,8 @@
         import User from '../models/modelUser.js'
         import path from 'path'
         import bcrypt from 'bcrypt'
+        import session from 'express-session'
+        import jwt from 'jsonwebtoken'
           
 
 
@@ -24,19 +26,41 @@
             // console.log(senhaDescript)
             if(!senhaDescript ) return res.status(400).json({mensagem: "Senha Inválida!"})
 
-                req.session.regenerate((err) =>  {
-                    if(err) return res.status(500).json({mensagem: 'Erro no servidor!'})
+                // req.session.regenerate((err) =>  {
+                //     if(err) return res.status(500).json({mensagem: 'Erro no servidor!'})
 
-                    req.session.usuario = {
-                        id: usuario.idUser,
+                //     req.session.usuario = {
+                //         id: usuario.idUser,
+                //         nome: usuario.nome,
+                //         email: usuario.email,
+                //         perfil: usuario.perfil
+                //     }
+
+                //     return res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',
+                //         subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
+                // })
+
+
+                const token =jwt.sign(
+                    {
+                       id: usuario.idUser,
                         nome: usuario.nome,
                         email: usuario.email,
                         perfil: usuario.perfil
-                    }
+                    },
 
-                    return res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',
-                        subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
-                })
+                    process.env.JWT_SECRET,
+                    
+                    {
+                        expiresIn: '1h',
+                        algorithms: 'HS256',
+                        issuer: 'sys-pet-wallet',
+                    }
+                )
+
+                res.cookie('token', token, {httpOnly: true, secure: true , masAge:1000 * 60 * 60})
+                res.render('index', {usuario: usuario.nome, title: 'Carteira de Pets',
+                subtitle: 'Registre vacinas, banho, tosa e serviços para cães e gatos'})
 
 
             }catch(err){
@@ -46,11 +70,20 @@
 
 
         export const logout = (req, res) => {
-            req.session.destroy((err) => {
-                if(err) return res.status(500).json({mensagem: 'Erro no servidor!'})
-                    res.clearCookie('connect.sid')
-                res.redirect('/login')
-            })
+            // req.session.destroy((err) => {
+            //     if(err) return res.status(500).json({mensagem: 'Erro no servidor!'})
+            //         res.clearCookie('connect.sid')
+            //     res.redirect('/login')
+            // })
+            res.clearCookie('token', 
+                {
+                    httpOnly: true,
+                    secure: true,
+                    maxAge: 1000 * 60 * 60
+                } )
+
+                return res.redirect('/login')
+
         }
 
 
